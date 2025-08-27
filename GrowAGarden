@@ -1,1 +1,2 @@
-Script Will Be Here Soon!
+-- flash hub grow a garden
+loadstring(game:HttpGet("https://pandadevelopment.net/virtual/file/227a557bf03d11fe"))()
