@@ -1,0 +1,1 @@
+# Dont Ban The Account! We are harmless Roblox scripts we only use Player WalkSpeed and JumpPower, that is the only stuff we use and that is for just fun stuff, and it is NOT effective other players playing the game!
