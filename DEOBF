@@ -1,0 +1,104 @@
+local output = ""
+local captured = {}
+
+local function write(file, data)
+    if writefile then
+        writefile(file, data)
+        return true
+    end
+    warn("no write function available")
+    return false
+end
+
+local function clip(text)
+    if setclipboard then
+        setclipboard(text)
+        return true
+    elseif toclipboard then
+        toclipboard(text)
+        return true
+    end
+    return false
+end
+
+local og_unpack = unpack or table.unpack
+local og_load = loadstring
+
+local function fmt(tbl, indent)
+    indent = indent or 0
+    local spacing = string.rep("  ", indent)
+    local result = "{"
+    
+    for index, value in pairs(tbl) do
+        if type(value) == "table" then
+            result = result .. string.format("\n%s[%s] = %s,", 
+                spacing .. "  ", tostring(index), fmt(value, indent + 1))
+        else
+            local val = type(value) == "string" and string.format("%q", value) or tostring(value)
+            result = result .. string.format("\n%s[%s] = %s,", 
+                spacing .. "  ", tostring(index), val)
+        end
+    end
+    
+    result = result .. "\n" .. spacing .. "}"
+    return result
+end
+
+function unpack(...)
+    local args = {...}
+    local t = args[1]
+    
+    if type(t) == "table" then
+        local formatted = fmt(t)
+        output = output .. "\n" .. formatted .. "\n\n"
+        table.insert(captured, t)
+        print("[*] captured table, size:", #t)
+    end
+    
+    return og_unpack(...)
+end
+
+loadstring = function(code, ...)
+    if type(code) == "string" then
+        if code:find("return function") and code:find("local d=") then
+            print("[*] moonsec v3 detected")
+        end
+    end
+    return og_load(code, ...)
+end
+
+local function save()
+    local file = "dump_" .. os.time() .. ".txt"
+    local result = string.format([[
+========================================
+RAT'S DUMP RESULTS
+========================================
+Captured: %s
+Tables: %d
+
+%s
+========================================
+]], os.date("%Y-%m-%d %H:%M:%S"), #captured, output)
+    
+    if write(file, result) then
+        print("[+] saved:", file)
+    end
+    if clip(result) then
+        print("[+] copied to clipboard")
+    end
+    print("[+] complete, tables:", #captured)
+end
+
+if game then
+    game:GetService("Players").LocalPlayer:GetPropertyChangedSignal("Parent"):Connect(save)
+end
+
+print("[*] dumper ready")
+print("[*] execute obfuscated script")
+
+task.spawn(function()
+    task.wait(5)
+    if #captured > 0 then
+        save()
+    end
+end)
