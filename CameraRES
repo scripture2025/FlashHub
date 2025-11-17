@@ -1,0 +1,14 @@
+-- camera resolution (like streches camera)
+getgenv().Resolution = {
+    [".gg/flashhub"] = 0.65
+}
+
+local Camera = workspace.CurrentCamera
+if getgenv().gg/flashhub == nil then
+    game:GetService("RunService").RenderStepped:Connect(
+        function()
+            Camera.CFrame = Camera.CFrame * CFrame.new(0, 0, 0, 1, 0, 0, 0, getgenv().Resolution[".gg/flashhub"], 0, 0, 0, 1)
+        end
+    )
+end
+getgenv().gg_scripters = "FlashMyNigga"
