@@ -1,4 +1,4 @@
--- camera resolution (like streches camera)
+-- camera resolution (NOT my script it's a pretty cool thing I found on Scriptblox)
 getgenv().Resolution = {
     [".gg/flashhub"] = 0.65
 }
@@ -11,4 +11,4 @@ if getgenv().gg/flashhub == nil then
         end
     )
 end
-getgenv().gg_scripters = "FlashMyNigga"
+getgenv().gg/flashhub = "FlashMyNigga"
